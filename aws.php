@@ -128,7 +128,7 @@ EC2NAME=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname) # get
 curl -s -d "hostname=$HOSTNAME&ec2name=$EC2NAME" "https://rshiny.space/adddns.php" # create a CNAME on the rshiny.space domain for it
 EOF
 chmod 755 /usr/local/bin/rshiny-dns.sh
-/usr/local/bin/rshiny-dns.sh <?php echo $hostname;?>
+/usr/local/bin/rshiny-dns.sh <?php echo $hostname . "\n"; ?>
 # set CNAME to update at reboot by running script from rc.local (since unless we have a static IP it'll change every reboot)
 perl -i -p -e 's~exit 0~/usr/local/bin/rshiny-dns.sh <?php echo $hostname;?>\nexit 0~' /etc/rc.local
 

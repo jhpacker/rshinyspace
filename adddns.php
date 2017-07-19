@@ -21,7 +21,7 @@ if ($remote_hostname != $ec2name){
 putenv("AWS_ACCESS_KEY_ID=$aws_key");
 putenv("AWS_SECRET_ACCESS_KEY=$aws_secret");
 
-$cli53 = shell_exec("/usr/local/bin/cli53 rrcreate rshiny.space '$hostname 60 CNAME $ec2name.'");
+$cli53 = shell_exec("/usr/local/bin/cli53 rrcreate --replace rshiny.space '$hostname 60 CNAME $ec2name.'");
 print $cli53;
 
 ?>
