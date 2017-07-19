@@ -1,0 +1,26 @@
+# rshiny virtual host
+server {
+	listen 80;
+	server_name %%hostname%%.rshiny.space;
+
+	proxy_http_version 1.1;
+	proxy_set_header Upgrade $http_upgrade;
+	proxy_set_header Connection "upgrade";
+	auth_basic "Username and Password are required";
+	auth_basic_user_file /etc/nginx/.htpasswd;
+
+	root /var/www/%%hostname%%.rshiny.space;
+	index index.html;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	location /shiny/ {
+	  proxy_pass http://127.0.0.1:3838/;
+	}
+
+        location /rstudio/ {
+	  proxy_pass http://127.0.0.1:8787/;
+	}
+}
