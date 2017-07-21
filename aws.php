@@ -4,9 +4,9 @@ $mailgun_api_key = trim(file_get_contents("mailgunapikey.cfg"));
 
 if (!(preg_match('/^curl/', $_SERVER['HTTP_USER_AGENT']) && preg_match('/amazonaws.com$/', $remote_hostname))){
     // could fail if custom rdns exists -- but no fresh instance is going to have that.
-	print "#sorry, this has to be run from your AWS instance<br>";
-	//exit;
-    }
+	print "# sorry, this has to be run from your AWS instance<br>\n";
+	exit;
+}
 
 // we require a host name & email
 
@@ -141,6 +141,7 @@ adduser <?php echo $username;?> rusers
 usermod -aG sudo <?php echo $username . "\n";?>
 echo <?php echo $username;?>:$UNIXPASSWD | chpasswd
 service nginx restart
+hostnamectl set-hostname '<?php echo $hostname;?>.rshiny.space'
 
 cd /home/<?php echo $username . "\n"; ?>
 mkdir shiny-server ; chown <?php echo $username; ?>:<?php echo $username; ?> shiny-server
@@ -149,7 +150,7 @@ mkdir .ssh ; chown <?php echo $username; ?>:<?php echo $username; ?> .ssh
 cp /home/ubuntu/.ssh/authorized_keys .ssh/
 chown <?php echo $username; ?>:<?php echo $username; ?> .ssh/authorized_keys
 # allow shiny apps to be accessed from under user's homedir
-cd /srv/shiny-server ; ln -s /home/<?php echo $username;?>/shiny-server .
+cd /srv/shiny-server ; ln -s /home/<?php echo $username;?>/shiny-server <?php echo $username . "\n";?>
 
 
 R -e 'devtools::install_github("bnosac/cronR")'
